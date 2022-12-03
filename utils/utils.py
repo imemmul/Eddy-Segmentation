@@ -190,7 +190,6 @@ def DiceLoss(targets, inputs, smooth=1e-6):
 
 
 
-import tens
 
 def DiceBCELoss(targets, inputs, smooth=1e-6):    
        
