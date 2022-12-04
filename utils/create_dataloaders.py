@@ -48,11 +48,11 @@ class EddyDatasetValid(Dataset):
         return len(self.images)
 
     def __getitem__(self, index):
-        img_file = sio.loadmat(self.images[index])
+        img_file = sio.loadmat(self.input_image_dir + self.images[index])
         img_x = img_file["vxSample"]
         img_y = img_file["vySample"]
         input_img = np.stack((img_x, img_y, np.zeros(img_x.shape)), -1)
-        mask_img = label_img = mpimg.imread(self.masks[index])
+        mask_img = label_img = mpimg.imread(self.mask_image_dir + self.masks[index])
         encoded_inputs = self.feature_extractor(input_img, mask_img, return_tensors="pt")
 
         for k,v in encoded_inputs.items():
