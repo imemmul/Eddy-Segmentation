@@ -111,3 +111,40 @@ def create_dataloaders(
   # Get class names
 
   return train_dataloader, test_dataloader, class_names
+import matplotlib.pyplot as plt
+def visualize_random_image(training_files, label_files, aug_files, aug_labels):
+    high_index = len(training_files)
+    rand_ind = np.random.randint(high_index)
+    mat_file_aug = sio.loadmat(file_name= f"../downloads/data4test/aug_data/{aug_files[rand_ind-1]}")
+    label_img_aug = mpimg.imread(f"../downloads/data4test/aug_label/{aug_labels[rand_ind-1]}")
+    mat_x_aug = mat_file_aug["vxSample"]
+    mat_y_aug = mat_file_aug["vySample"]
+    input_image_aug = np.stack((mat_x_aug, mat_y_aug, np.zeros(mat_x_aug.shape)), -1)
+    # not-augmented data
+    mat_file = sio.loadmat(file_name= f"../downloads/data4test/data/{training_files[rand_ind]}")
+    label_img = mpimg.imread(f"../downloads/data4test/label/{label_files[rand_ind]}")
+    mat_x = mat_file["vxSample"]
+    mat_y = mat_file["vySample"]
+    input_image = np.stack((mat_x, mat_y, np.zeros(mat_x.shape)), -1)
+    print(f"data:{training_files[rand_ind]}")
+    print(f"label:{label_files[rand_ind]}")
+    print(f"aug data:{aug_files[rand_ind]}")
+    print(f"aug labels:{aug_labels[rand_ind]}")
+    fig = plt.figure(figsize=(15, 10))
+    rows = 2
+    columns = 2
+    fig.add_subplot(rows, columns, 1)
+    plt.imshow(input_image)
+    plt.axis(False)
+    plt.title("Data")
+    fig.add_subplot(rows, columns, 2)
+    plt.imshow(label_img)
+    plt.axis(False)
+    plt.title("Label")
+    fig.add_subplot(rows, columns, 3)
+    plt.imshow(input_image_aug)
+    plt.title("Aug Data")
+    plt.axis(False)
+    fig.add_subplot(rows, columns, 4)
+    plt.title("Aug Label")
+    plt.imshow(label_img_aug)
